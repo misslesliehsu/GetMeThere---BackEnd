@@ -5,9 +5,11 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'gtfs-realtime-bindings'
+gem 'gtfs-realtime-bindings', '~> 0.0.5'
 
-gem 'google-protobuf'
+gem 'protobuf', '~> 3.8', '>= 3.8.1'
+
+# gem 'google-protobuf'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
