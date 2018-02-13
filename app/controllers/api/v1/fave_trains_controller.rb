@@ -52,9 +52,9 @@ class Api::V1::FaveTrainsController < ApplicationController
 
 
 
-    #create new fave_train for a given user
+    #create new fave_train for a given user - need to send these params: {"coded":"725","regular":"Times Sq - 42 St","direction":"S","line":"7"}
     def create
-      @fave_train = FaveTrain.new(user_id: params[:user_id], train_id: params[:id].to_i, station_id: params[:user_id], direction: params[:direction])
+      @fave_train = FaveTrain.new(user_id: params[:user_id], train_id: Train.find_by(line: params[:line]), station_id: Station.find_by(coded: params[:coded]), direction: params[:direction])
       if @fave_train.valid?
         @fave_train.save
         render json: @fave_train
@@ -62,6 +62,7 @@ class Api::V1::FaveTrainsController < ApplicationController
         render json: {errors: @fave_train.errors.full_messages}, status: 500
       end
     end
+
 
     def destroy
       @fave_train = Fave_train.find(params[:id])

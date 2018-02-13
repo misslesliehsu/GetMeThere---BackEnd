@@ -7,15 +7,21 @@ require 'time'
 class Api::V1::TrainsController < ApplicationController
 
   def show
-    @train = Train.find_by(line: params[:id])
-    data = Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=cc49bf175fd71f9b67ff33c1ef07f629&feed_id=#{@train.Mta_Id}"))
+    train = Train.find_by(line: params[:id])
+    data = Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=cc49bf175fd71f9b67ff33c1ef07f629&feed_id=#{train.Mta_Id}"))
     feed = Transit_realtime::FeedMessage.decode(data)
     interim = translate(feed[:entity])
-    output = {}
-    interim.map do |k,v|
-      stop = Station.find_by(coded: k[0,3]).regular
-      key = @train.line + " - " + stop + " - " + k[3]
-      output[key] = v
+    output = []
+    interim.each do |k,v|
+      indiv = {}
+      indiv["coded"] = k[0,3]
+      indiv["regular"] = Station.find_by(coded: k[0,3]).regular
+      indiv["direction"] = k[3]
+      indiv["line"] = train.line
+      output.push(indiv)
+      # stop = Station.find_by(coded: k[0,3]).regular
+      # key = train.line + " - " + stop + " - " + k[3]
+      # output[key] = v
     end
     puts output
     render json: output.to_json
@@ -23,9 +29,14 @@ class Api::V1::TrainsController < ApplicationController
 
 
 
-
-
   def translate(array)
+
+    # trip_update[:trip][:route_id] = "G"
+    # trip_update[:stop_time_update][:arrival][:time] = 12513139280934
+    # trip_update[:stop_time_update][:stop_id] = F25S
+
+
+
     train_hash = {}
     array.each_with_index do |o, i|
       if i % 2 == 0 || i == 0
