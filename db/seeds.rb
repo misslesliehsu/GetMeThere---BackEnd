@@ -11,6 +11,8 @@ Station.destroy_all
 FaveTrain.destroy_all
 
 
+station_ids = []
+CSV.foreach('/Users/aiw392/Desktop/Stations.csv') { |row| station_ids << {row[2] => row[5]} }
 
 train_links = {
 "1"=>1,

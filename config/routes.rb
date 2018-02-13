@@ -5,14 +5,12 @@ Rails.application.routes.draw do
     namespace :v1 do
 
     resources :users do
-    resources :fave_trains, only: [:index, :create, :destroy]
-    end
-
-    resources :trains, only: [:show]
-
-
-
-
+    resources :fave_trains, only: [:index, :create, :show, :destroy]
+      end
     end
   end
+
+  post "/login", to: 'auth#login'
+  get "/current_user", to: "auth#currentUser"
+
 end
