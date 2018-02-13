@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180209184251) do
+ActiveRecord::Schema.define(version: 20180213134505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,15 @@ ActiveRecord::Schema.define(version: 20180209184251) do
     t.integer "train_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "stop"
+    t.string "station_id"
+    t.string "direction"
+  end
+
+  create_table "stations", force: :cascade do |t|
+    t.string "regular"
+    t.string "coded"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "trains", force: :cascade do |t|
