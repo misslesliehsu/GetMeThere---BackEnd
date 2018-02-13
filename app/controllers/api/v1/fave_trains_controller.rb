@@ -6,36 +6,20 @@ require 'time'
 
 class Api::V1::FaveTrainsController < ApplicationController
 
-  #create new fave_train for a given user
-  def create
-    @fave_train = FaveTrain.new(user_id: params[:user_id], train_id: params[:id].to_i, station_id: params[:user_id], direction: params[:direction])
-    if @fave_train.valid?
-      @fave_train.save
-      render json: @fave_train
-    else
-      render json: {errors: @fave_train.errors.full_messages}, status: 500
-    end
-  end
 
-  #give back ALL fave_train times - could move this to user
   def index
-    # result = {}
-    # @fave_trains = FaveTrain.all.select do |ft|
-    #   ft.user_id == params[:user_id]
-    # end
-    # @fave_trains.each do |ft|
-    #   data = Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=cc49bf175fd71f9b67ff33c1ef07f629&feed_id=#{ft.train.Mta_Id}"))
-    #   feed = Transit_realtime::FeedMessage.decode(data)
-    #   output = translate(feed[:entity])
-    #   target = ft.station.coded + ft.direction #"702N"
-    #   result[ft.train.line] = output[target] #"6 => [1,4,6]"; rename Key?
-    # end
-    # render json: result.to_json
-
-    data = Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=cc49bf175fd71f9b67ff33c1ef07f629&feed_id=51"))
-    feed = Transit_realtime::FeedMessage.decode(data)
-    output = translate(feed[:entity])
-    render json: output.to_json
+    result = {}
+    @fave_trains = User.find(params[:user_id]).fave_trains
+    @fave_trains.each do |ft|
+      data = Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=cc49bf175fd71f9b67ff33c1ef07f629&feed_id=#{ft.train.Mta_Id}"))
+      feed = Transit_realtime::FeedMessage.decode(data)
+      output = translate(feed[:entity])
+      target = ft.station.coded + ft.direction #"702N"
+      line_and_stop = ft.train.line + " - " + ft.station.regular + " - " + ft.direction #"6 - Bleecker St. - N"
+      result[line_and_stop] = output[target] #"6 - Bleecker St. => [1,4,6]"
+    end
+    puts result
+    render json: result.to_json
   end
 
 
@@ -52,8 +36,8 @@ class Api::V1::FaveTrainsController < ApplicationController
             train_hash[stop] = [arrival_time]
             end
           end
-        end
       end
+    end
 
     train_hash.collect do |k, v|
       train_hash[k] = v.map! do |time|
@@ -63,4 +47,26 @@ class Api::V1::FaveTrainsController < ApplicationController
       train_hash[k] = v.select do |x| x >= 0 end
     end
     train_hash
+  end
+
+
+
+
+    #create new fave_train for a given user
+    def create
+      @fave_train = FaveTrain.new(user_id: params[:user_id], train_id: params[:id].to_i, station_id: params[:user_id], direction: params[:direction])
+      if @fave_train.valid?
+        @fave_train.save
+        render json: @fave_train
+      else
+        render json: {errors: @fave_train.errors.full_messages}, status: 500
+      end
+    end
+
+    def destroy
+      @fave_train = Fave_train.find(params[:id])
+      @fave_train.destroy
+    end
+
+
 end

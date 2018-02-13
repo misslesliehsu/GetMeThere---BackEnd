@@ -8,6 +8,7 @@
 Train.destroy_all
 User.destroy_all
 Station.destroy_all
+FaveTrain.destroy_all
 
 
 
@@ -38,7 +39,7 @@ train_links = {
 }
 
 stop_translations = {
-  "R01"=>"Astoria - Ditmars Blvd",
+"R01"=>"Astoria - Ditmars Blvd",
 "R03"=>"Astoria Blvd",
 "R04"=>"30 Av",
 "R05"=>"Broadway",
@@ -545,3 +546,7 @@ end
 train_links.each do |k,v|
   Train.create(line: k, Mta_Id: v)
 end
+
+#creating one user with favorite train line G, Nassau St. station, North
+u = User.create(username: "Tester1")
+FaveTrain.create!(user_id: u.id, train_id: Train.find_by(line: "G").id, station_id: Station.find_by(coded: "G28").id, direction: "N")
