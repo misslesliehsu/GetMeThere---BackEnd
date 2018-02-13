@@ -18,6 +18,7 @@ class Api::V1::TrainsController < ApplicationController
       indiv["regular"] = Station.find_by(coded: k[0,3]).regular
       indiv["direction"] = k[3]
       indiv["line"] = train.line
+      indiv["times"] = v
       output.push(indiv)
       # stop = Station.find_by(coded: k[0,3]).regular
       # key = train.line + " - " + stop + " - " + k[3]

@@ -11,9 +11,6 @@ Station.destroy_all
 FaveTrain.destroy_all
 
 
-station_ids = []
-CSV.foreach('/Users/aiw392/Desktop/Stations.csv') { |row| station_ids << {row[2] => row[5]} }
-
 train_links = {
 "1"=>1,
 "2"=>1,
@@ -550,5 +547,5 @@ train_links.each do |k,v|
 end
 
 #creating one user with favorite train line G, Nassau St. station, North
-u = User.create(username: "Tester1")
+u = User.create(username: "Tester1", password: "Tester1")
 FaveTrain.create!(user_id: u.id, train_id: Train.find_by(line: "G").id, station_id: Station.find_by(coded: "G28").id, direction: "N")

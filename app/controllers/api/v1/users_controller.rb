@@ -16,7 +16,7 @@ class Api::V1::UsersController < ApplicationController
 
     #Just need a username from front-end
     def create
-      @user = User.new(params[:username])
+      @user = User.new(username: params[:username], password: params[:password])
       if @user.valid?
         @user.save
         render json: @user

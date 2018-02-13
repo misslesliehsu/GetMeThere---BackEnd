@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :users do
     resources :fave_trains, only: [:index, :create, :show, :destroy]
       end
+    resources :trains, only: [:show]
     end
   end
 
