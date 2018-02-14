@@ -23,27 +23,39 @@ class Api::V1::TrainsController < ApplicationController
     end
     render json: output.to_json
   end
-    # interim = Array(feed[:entity])
-    # output = []
-    # # debugger
-    # interim.select! do |y|
-    #   y[:trip_update]
-    # end
-    # interim.select! do |z|
-    #   z[:trip_update][:trip][:route_id] == params[:id]
-    # end
-    # interim2=Array(interim)
-    # interim2[:trip_update][:trip][:stop_time_update].each do |x|
-    #   indiv = {}
-    #   indiv["coded"] = x[:stop_id][0,3]
-    #   indiv["regular"] = Station.find_by(coded: x[:stop_id][0,3]).regular
-    #   indiv["direction"] = x[:stop_id][3]
-    #   indiv["line"] = train.line
-    #   indiv["times"] = x[:arrival][:time]
-    #   output.push(indiv)
-    # end
-    #
-    # render json: output.to_json
+
+
+
+  #   interim = Array(feed[:entity])
+  #   output = []
+  #   # debugger
+  #   interim.select! do |y|
+  #     y[:trip_update]
+  #   end
+  #   interim.select! do |y|
+  #     y[:trip_update][:trip]
+  #   end
+  #   interim.select! do |y|
+  #     y[:trip_update][:trip][:route_id]
+  #   end
+  #   interim.select! do |y|
+  #     y[:trip_update][:trip][:stop_time_update]
+  #   end
+  #   interim.select! do |z|
+  #     z[:trip_update][:trip][:route_id] == params[:id]
+  #   end
+  #   interim2=Array(interim)
+  #   interim2[:trip_update][:trip][:stop_time_update].each do |x|
+  #     indiv = {}
+  #     indiv["coded"] = x[:stop_id][0,3]
+  #     indiv["regular"] = Station.find_by(coded: x[:stop_id][0,3]).regular
+  #     indiv["direction"] = x[:stop_id][3]
+  #     indiv["line"] = train.line
+  #     indiv["times"] = x[:arrival][:time]
+  #     output.push(indiv)
+  #   end
+  #
+  #   render json: output.to_json
   # end
 
 
