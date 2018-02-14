@@ -7,6 +7,7 @@ require 'time'
 class Api::V1::FaveTrainsController < ApplicationController
 
 
+
   def index
     result = {}
     @fave_trains = User.find(params[:user_id]).fave_trains

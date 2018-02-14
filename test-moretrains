@@ -1,0 +1,8 @@
+{"id":"1","trip_update":
+  {"trip":
+    {"trip_id":"056750_L..S",
+    "start_date":"20180214",
+    "route_id":"L"},
+  "stop_time_update":[
+      {"arrival":{"time":1518620535},"departure":{"time":1518620565},"stop_id":"L28S","schedule_relationship":0},
+      {"arrival":{"time":1518620595},"stop_id":"L29S","schedule_relationship":0}]}}
